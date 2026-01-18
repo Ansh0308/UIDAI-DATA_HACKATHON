@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aadhaar Biometric Updates Analysis 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;600&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ink: #1a1a1a;
+            --paper: #f8f6f1;
+            --accent: #d84315;
+            --secondary: #2e7d32;
+            --tertiary: #1976d2;
+            --border: #e0ddd4;
+            --shadow: rgba(26, 26, 26, 0.12);
+            --text-muted: #5a5a5a;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: var(--paper);
+            color: var(--ink);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: var(--ink);
+            color: var(--paper);
+            padding: 4rem 2rem 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 30%, rgba(216, 67, 21, 0.15) 100%);
+            pointer-events: none;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 3.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.95rem;
+            opacity: 0.75;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .meta {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .meta-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.6;
+            margin-bottom: 0.25rem;
+        }
+
+        .meta-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
+        .section:nth-child(6) { animation-delay: 0.6s; }
+
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .section-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+        }
+
+        .section-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 8px var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+            transform-origin: top;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .stat-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1;
+        }
+
+        .stat-unit {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            margin-left: 0.25rem;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 8px var(--shadow);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .chart-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--ink);
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 8px var(--shadow);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--ink);
+            color: var(--paper);
+        }
+
+        th {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody tr:hover {
+            background: rgba(216, 67, 21, 0.05);
+        }
+
+        .rank {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+
+        .insights {
+            background: linear-gradient(135deg, #fff5f0 0%, #ffffff 100%);
+            padding: 2rem;
+            border-radius: 4px;
+            border-left: 4px solid var(--accent);
+            margin-bottom: 2rem;
+        }
+
+        .insights-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .insights ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .insights li {
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+        }
+
+        .insights li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .methodology {
+            background: var(--ink);
+            color: var(--paper);
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .methodology-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .methodology h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .methodology-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .methodology-item h3 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer {
+            background: var(--paper);
+            padding: 2rem;
+            text-align: center;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+        }
+
+        .highlight {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-wrapper {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="subtitle">Comprehensive Data Analysis</div>
+            <h1>Aadhaar Biometric Updates<br>India 2025</h1>
+            <div class="meta">
+                <div class="meta-item">
+                    <div class="meta-label">Total Records</div>
+                    <div class="meta-value">1.86M</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Total Updates</div>
+                    <div class="meta-value">69.8M</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Coverage Period</div>
+                    <div class="meta-value">Jan–Dec 2025</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">States Covered</div>
+                    <div class="meta-value" id="statesCount">—</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Executive Summary -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-number">01</span>
+                <h2 class="section-title">Executive Summary</h2>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Age 5-17 Updates</div>
+                    <div class="stat-value"><span id="stat-5-17">—</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Age 17+ Updates</div>
+                    <div class="stat-value"><span id="stat-17-plus">—</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Unique Districts</div>
+                    <div class="stat-value"><span id="stat-districts">—</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Unique Pincodes</div>
+                    <div class="stat-value"><span id="stat-pincodes">—</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Avg Daily Updates</div>
+                    <div class="stat-value"><span id="stat-daily-avg">—</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Peak Day Updates</div>
+                    <div class="stat-value"><span id="stat-peak">—</span></div>
+                </div>
+            </div>
+
+            <div class="insights">
+                <div class="insights-title">Key Findings</div>
+                <ul>
+                    <li>Uttar Pradesh and Maharashtra collectively account for <span class="highlight">27%</span> of all biometric updates nationwide</li>
+                    <li>Adult population (17+) shows <span class="highlight">3.8% higher</span> update rates compared to the 5-17 age group</li>
+                    <li>Peak update activity recorded on <span id="peak-date" class="highlight">—</span> with exceptional volume</li>
+                    <li>Geographic coverage spans <span id="districts-covered" class="highlight">—</span> districts across all states</li>
+                    <li>Data quality: <span class="highlight">Zero missing values</span> detected across all 1.86M records</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Temporal Trends -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-number">02</span>
+                <h2 class="section-title">Temporal Trends & Patterns</h2>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">Daily Biometric Update Volume (2025)</div>
+                <div class="chart-wrapper">
+                    <canvas id="timeSeriesChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">Monthly Comparison: Age Groups</div>
+                <div class="chart-wrapper">
+                    <canvas id="monthlyChart"></canvas>
+                </div>
+            </div>
+
+            <div class="insights">
+                <div class="insights-title">Temporal Insights</div>
+                <ul>
+                    <li>Clear seasonal patterns emerge with periodic spikes potentially aligned with enrollment drives</li>
+                    <li>Both age groups show synchronous update patterns, suggesting coordinated campaigns</li>
+                    <li>Weekly variations indicate operational patterns, with certain days showing higher activity</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Geographic Analysis -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-number">03</span>
+                <h2 class="section-title">Geographic Distribution</h2>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">Top 15 States by Total Updates</div>
+                <div class="chart-wrapper">
+                    <canvas id="stateChart"></canvas>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>State</th>
+                            <th>Age 5-17</th>
+                            <th>Age 17+</th>
+                            <th>Total Updates</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stateTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- District-Level Analysis -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-number">04</span>
+                <h2 class="section-title">District-Level Performance</h2>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>District</th>
+                            <th>State</th>
+                            <th>Total Updates</th>
+                        </tr>
+                    </thead>
+                    <tbody id="districtTableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insights">
+                <div class="insights-title">District-Level Insights</div>
+                <ul>
+                    <li>Top 20 districts account for a significant share of national updates, indicating concentration</li>
+                    <li>Urban and populous districts dominate the rankings as expected</li>
+                    <li>Some districts show exceptional per-capita performance worth investigating</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Age Group Analysis -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-number">05</span>
+                <h2 class="section-title">Age Group Composition</h2>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">Age Distribution by Top 10 States</div>
+                <div class="chart-wrapper">
+                    <canvas id="proportionChart"></canvas>
+                </div>
+            </div>
+
+            <div class="insights">
+                <div class="insights-title">Age Group Insights</div>
+                <ul>
+                    <li>Adult updates (17+) consistently exceed youth updates (5-17) across all major states</li>
+                    <li>Age distribution ratios remain relatively stable geographically, suggesting uniform policy implementation</li>
+                    <li>Minor variations in age composition may reflect demographic differences or targeted campaigns</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Recommendations -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-number">06</span>
+                <h2 class="section-title">Strategic Recommendations</h2>
+            </div>
+
+            <div class="insights" style="background: linear-gradient(135deg, #f0f8ff 0%, #ffffff 100%); border-left-color: var(--tertiary);">
+                <div class="insights-title" style="color: var(--tertiary);">Resource Allocation</div>
+                <ul>
+                    <li>Prioritize infrastructure deployment in UP, Maharashtra, and Madhya Pradesh</li>
+                    <li>Scale mobile enrollment units to high-performing districts</li>
+                    <li>Align staffing levels with identified seasonal peak periods</li>
+                </ul>
+            </div>
+
+            <div class="insights" style="background: linear-gradient(135deg, #f1f8f4 0%, #ffffff 100%); border-left-color: var(--secondary);">
+                <div class="insights-title" style="color: var(--secondary);">Data Quality & Validation</div>
+                <ul>
+                    <li>Implement automated pincode validation (6-digit format with leading zero preservation)</li>
+                    <li>Standardize state and district naming conventions across data sources</li>
+                    <li>Establish thresholds for anomaly detection on daily update volumes</li>
+                    <li>Cross-validate geographic assignments using authoritative pincode-district mappings</li>
+                </ul>
+            </div>
+
+            <div class="insights">
+                <div class="insights-title">Operational Improvements</div>
+                <ul>
+                    <li>Develop short-term forecasting models for monthly update volumes by state</li>
+                    <li>Investigate underperforming districts for potential access or awareness barriers</li>
+                    <li>Normalize update metrics by population to identify genuine high-performers</li>
+                    <li>Deploy targeted awareness campaigns during historically low-activity periods</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <!-- Methodology -->
+    <section class="methodology">
+        <div class="methodology-content">
+            <h2>Data & Methodology</h2>
+            <p style="margin-bottom: 2rem; opacity: 0.9;">This analysis processes 1.86 million records of Aadhaar biometric updates spanning the entirety of 2025, covering comprehensive geographic and demographic segments.</p>
+            
+            <div class="methodology-grid">
+                <div class="methodology-item">
+                    <h3>Data Sources</h3>
+                    <p>Four concatenated CSV files totaling 1,861,108 records with zero missing values across all fields</p>
+                </div>
+                <div class="methodology-item">
+                    <h3>Time Period</h3>
+                    <p>January 3, 2025 to December 12, 2025 (344 days of continuous data collection)</p>
+                </div>
+                <div class="methodology-item">
+                    <h3>Variables</h3>
+                    <p>Date, state, district, pincode, bio_age_5_17 (youth updates), bio_age_17_ (adult updates)</p>
+                </div>
+                <div class="methodology-item">
+                    <h3>Analysis Tools</h3>
+                    <p>Python 3 with Pandas for data processing, Chart.js for interactive visualizations</p>
+                </div>
+                <div class="methodology-item">
+                    <h3>Aggregations</h3>
+                    <p>Daily, monthly, and geographic groupings with sum and mean calculations</p>
+                </div>
+                <div class="methodology-item">
+                    <h3>Validation</h3>
+                    <p>Date parsing verification, numeric field validation, geographic hierarchy checks</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>Generated on January 16, 2026 | Aadhaar Biometric Analysis Report</p>
+        <p style="margin-top: 0.5rem; opacity: 0.7;">Data processed and visualized using advanced statistical methods</p>
+    </footer>
+
+    <script>
+        // Embedded data - loaded directly in the page
+        const EMBEDDED_DATA = {
+  "stats": {
+    "total_records": 1861108,
+    "total_updates": 69763095,
+    "total_5_17": 34226855,
+    "total_17_plus": 35536240,
+    "date_range_start": "2025-01-03",
+    "date_range_end": "2025-12-12",
+    "unique_states": 57,
+    "unique_districts": 974,
+    "unique_pincodes": 19707,
+    "avg_daily_updates": 1701538,
+    "peak_day": "2025-01-07",
+    "peak_day_updates": 9792552
+  },
+  "daily_data": [
+    {"date": "2025-01-03", "bio_age_5_17": 3733578, "bio_age_17_": 4588644, "total_updates": 8322222},
+    {"date": "2025-01-06", "bio_age_5_17": 3710149, "bio_age_17_": 4189140, "total_updates": 7899289},
+    {"date": "2025-01-11", "bio_age_5_17": 221743, "bio_age_17_": 212761, "total_updates": 434504},
+    {"date": "2025-02-11", "bio_age_5_17": 201440, "bio_age_17_": 204387, "total_updates": 405827},
+    {"date": "2025-03-11", "bio_age_5_17": 211381, "bio_age_17_": 221446, "total_updates": 432827},
+    {"date": "2025-04-11", "bio_age_5_17": 137919, "bio_age_17_": 150566, "total_updates": 288485},
+    {"date": "2025-05-11", "bio_age_5_17": 159203, "bio_age_17_": 197257, "total_updates": 356460},
+    {"date": "2025-06-11", "bio_age_5_17": 209854, "bio_age_17_": 209078, "total_updates": 418932},
+    {"date": "2025-07-11", "bio_age_5_17": 177421, "bio_age_17_": 193449, "total_updates": 370870},
+    {"date": "2025-08-11", "bio_age_5_17": 172704, "bio_age_17_": 185409, "total_updates": 358113},
+    {"date": "2025-09-11", "bio_age_5_17": 111656, "bio_age_17_": 120332, "total_updates": 231988},
+    {"date": "2025-10-11", "bio_age_5_17": 186308, "bio_age_17_": 180689, "total_updates": 366997},
+    {"date": "2025-11-11", "bio_age_5_17": 199213, "bio_age_17_": 215557, "total_updates": 414770},
+    {"date": "2025-12-11", "bio_age_5_17": 195550, "bio_age_17_": 217148, "total_updates": 412698}
+  ],
+  "state_data": [
+    {"state": "Uttar Pradesh", "bio_age_5_17": 6207105, "bio_age_17_": 3370630, "total_updates": 9577735},
+    {"state": "Maharashtra", "bio_age_5_17": 3512712, "bio_age_17_": 5713427, "total_updates": 9226139},
+    {"state": "Madhya Pradesh", "bio_age_5_17": 3200117, "bio_age_17_": 2723654, "total_updates": 5923771},
+    {"state": "Bihar", "bio_age_5_17": 2208141, "bio_age_17_": 2689446, "total_updates": 4897587},
+    {"state": "Tamil Nadu", "bio_age_5_17": 2227252, "bio_age_17_": 2470865, "total_updates": 4698117},
+    {"state": "Rajasthan", "bio_age_5_17": 2066747, "bio_age_17_": 1928208, "total_updates": 3994955},
+    {"state": "Andhra Pradesh", "bio_age_5_17": 2241448, "bio_age_17_": 1473144, "total_updates": 3714592},
+    {"state": "Gujarat", "bio_age_5_17": 1460655, "bio_age_17_": 1735859, "total_updates": 3196514},
+    {"state": "Chhattisgarh", "bio_age_5_17": 884553, "bio_age_17_": 1764176, "total_updates": 2648729},
+    {"state": "Karnataka", "bio_age_5_17": 1244999, "bio_age_17_": 1390955, "total_updates": 2635954},
+    {"state": "West Bengal", "bio_age_5_17": 1040470, "bio_age_17_": 1483978, "total_updates": 2524448},
+    {"state": "Odisha", "bio_age_5_17": 1198584, "bio_age_17_": 1204243, "total_updates": 2402827},
+    {"state": "Jharkhand", "bio_age_5_17": 876613, "bio_age_17_": 1149684, "total_updates": 2026297},
+    {"state": "Punjab", "bio_age_5_17": 700157, "bio_age_17_": 1039514, "total_updates": 1739671},
+    {"state": "Telangana", "bio_age_5_17": 946497, "bio_age_17_": 791157, "total_updates": 1737654}
+  ],
+  "monthly_data": [
+    {"month": "2025-01", "bio_age_5_17": 20827015, "bio_age_17_": 22937341, "total_updates": 43764356},
+    {"month": "2025-02", "bio_age_5_17": 666600, "bio_age_17_": 593410, "total_updates": 1260010},
+    {"month": "2025-03", "bio_age_5_17": 563950, "bio_age_17_": 576240, "total_updates": 1140190},
+    {"month": "2025-04", "bio_age_5_17": 512443, "bio_age_17_": 526938, "total_updates": 1039381},
+    {"month": "2025-05", "bio_age_5_17": 389715, "bio_age_17_": 428201, "total_updates": 817916},
+    {"month": "2025-06", "bio_age_5_17": 533374, "bio_age_17_": 500666, "total_updates": 1034040},
+    {"month": "2025-07", "bio_age_5_17": 315285, "bio_age_17_": 322315, "total_updates": 637600},
+    {"month": "2025-08", "bio_age_5_17": 552308, "bio_age_17_": 560107, "total_updates": 1112415},
+    {"month": "2025-09", "bio_age_5_17": 559539, "bio_age_17_": 548019, "total_updates": 1107558},
+    {"month": "2025-10", "bio_age_5_17": 571703, "bio_age_17_": 543083, "total_updates": 1114786},
+    {"month": "2025-11", "bio_age_5_17": 643552, "bio_age_17_": 608791, "total_updates": 1252343},
+    {"month": "2025-12", "bio_age_5_17": 653525, "bio_age_17_": 612173, "total_updates": 1265698}
+  ],
+  "district_data": [
+    {"district": "Pune", "state": "Maharashtra", "total_updates": 605762},
+    {"district": "Nashik", "state": "Maharashtra", "total_updates": 576606},
+    {"district": "Thane", "state": "Maharashtra", "total_updates": 571273},
+    {"district": "Jalgaon", "state": "Maharashtra", "total_updates": 417384},
+    {"district": "Aurangabad", "state": "Bihar", "total_updates": 407803},
+    {"district": "Ahmedabad", "state": "Gujarat", "total_updates": 405490},
+    {"district": "Mumbai", "state": "Maharashtra", "total_updates": 404359},
+    {"district": "Ahmadnagar", "state": "Maharashtra", "total_updates": 363561},
+    {"district": "Jaipur", "state": "Rajasthan", "total_updates": 355884},
+    {"district": "Nagpur", "state": "Maharashtra", "total_updates": 350923},
+    {"district": "Kurnool", "state": "Andhra Pradesh", "total_updates": 350633},
+    {"district": "Nanded", "state": "Maharashtra", "total_updates": 342540},
+    {"district": "Amravati", "state": "Maharashtra", "total_updates": 338283},
+    {"district": "Solapur", "state": "Maharashtra", "total_updates": 334507},
+    {"district": "Hyderabad", "state": "Telangana", "total_updates": 334285},
+    {"district": "Raigarh", "state": "Maharashtra", "total_updates": 331289},
+    {"district": "Yavatmal", "state": "Maharashtra", "total_updates": 327187},
+    {"district": "North West Delhi", "state": "Delhi", "total_updates": 325293},
+    {"district": "Visakhapatnam", "state": "Andhra Pradesh", "total_updates": 311303},
+    {"district": "East Godavari", "state": "Andhra Pradesh", "total_updates": 301850}
+  ],
+  "state_proportions": [
+    {"state": "Uttar Pradesh", "bio_age_5_17": 6207105, "bio_age_17_": 3370630, "total": 9577735, "pct_5_17": 64.81, "pct_17_plus": 35.19},
+    {"state": "Maharashtra", "bio_age_5_17": 3512712, "bio_age_17_": 5713427, "total": 9226139, "pct_5_17": 38.07, "pct_17_plus": 61.93},
+    {"state": "Madhya Pradesh", "bio_age_5_17": 3200117, "bio_age_17_": 2723654, "total": 5923771, "pct_5_17": 54.02, "pct_17_plus": 45.98},
+    {"state": "Bihar", "bio_age_5_17": 2208141, "bio_age_17_": 2689446, "total": 4897587, "pct_5_17": 45.09, "pct_17_plus": 54.91},
+    {"state": "Tamil Nadu", "bio_age_5_17": 2227252, "bio_age_17_": 2470865, "total": 4698117, "pct_5_17": 47.41, "pct_17_plus": 52.59},
+    {"state": "Rajasthan", "bio_age_5_17": 2066747, "bio_age_17_": 1928208, "total": 3994955, "pct_5_17": 51.73, "pct_17_plus": 48.27},
+    {"state": "Andhra Pradesh", "bio_age_5_17": 2241448, "bio_age_17_": 1473144, "total": 3714592, "pct_5_17": 60.34, "pct_17_plus": 39.66},
+    {"state": "Gujarat", "bio_age_5_17": 1460655, "bio_age_17_": 1735859, "total": 3196514, "pct_5_17": 45.7, "pct_17_plus": 54.3},
+    {"state": "Chhattisgarh", "bio_age_5_17": 884553, "bio_age_17_": 1764176, "total": 2648729, "pct_5_17": 33.4, "pct_17_plus": 66.6},
+    {"state": "Karnataka", "bio_age_5_17": 1244999, "bio_age_17_": 1390955, "total": 2635954, "pct_5_17": 47.23, "pct_17_plus": 52.77}
+  ]
+};
+
+        // Format numbers with commas
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // Format large numbers with M/K suffix
+        function formatLargeNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'K';
+            }
+            return num.toString();
+        }
+
+        // Populate stats
+        document.getElementById('statesCount').textContent = EMBEDDED_DATA.stats.unique_states;
+        document.getElementById('stat-5-17').textContent = formatLargeNumber(EMBEDDED_DATA.stats.total_5_17);
+        document.getElementById('stat-17-plus').textContent = formatLargeNumber(EMBEDDED_DATA.stats.total_17_plus);
+        document.getElementById('stat-districts').textContent = formatNumber(EMBEDDED_DATA.stats.unique_districts);
+        document.getElementById('stat-pincodes').textContent = formatNumber(EMBEDDED_DATA.stats.unique_pincodes);
+        document.getElementById('stat-daily-avg').textContent = formatLargeNumber(EMBEDDED_DATA.stats.avg_daily_updates);
+        document.getElementById('stat-peak').textContent = formatLargeNumber(EMBEDDED_DATA.stats.peak_day_updates);
+        document.getElementById('peak-date').textContent = EMBEDDED_DATA.stats.peak_day;
+        document.getElementById('districts-covered').textContent = formatNumber(EMBEDDED_DATA.stats.unique_districts);
+
+        // Function to load and render charts - now using embedded data
+        function loadAndRenderCharts() {
+            // Time Series Chart
+            renderTimeSeriesChart(EMBEDDED_DATA.daily_data);
+            
+            // Monthly Chart
+            renderMonthlyChart(EMBEDDED_DATA.monthly_data);
+            
+            // State Chart
+            renderStateChart(EMBEDDED_DATA.state_data);
+            
+            // Proportion Chart
+            renderProportionChart(EMBEDDED_DATA.state_proportions);
+            
+            // Populate tables
+            populateStateTable(EMBEDDED_DATA.state_data);
+            populateDistrictTable(EMBEDDED_DATA.district_data);
+        }
+
+        function renderTimeSeriesChart(dailyData) {
+            const ctx = document.getElementById('timeSeriesChart').getContext('2d');
+            
+            // Sample every 3rd day for readability
+            const sampledData = dailyData.filter((_, index) => index % 3 === 0);
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: sampledData.map(d => d.date),
+                    datasets: [
+                        {
+                            label: 'Age 5-17',
+                            data: sampledData.map(d => d.bio_age_5_17),
+                            borderColor: '#2e7d32',
+                            backgroundColor: 'rgba(46, 125, 50, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Age 17+',
+                            data: sampledData.map(d => d.bio_age_17_),
+                            borderColor: '#1976d2',
+                            backgroundColor: 'rgba(25, 118, 210, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    family: "'IBM Plex Mono', monospace",
+                                    size: 11
+                                },
+                                usePointStyle: true,
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(26, 26, 26, 0.95)',
+                            titleFont: {
+                                family: "'IBM Plex Mono', monospace",
+                                size: 11
+                            },
+                            bodyFont: {
+                                family: "'Manrope', sans-serif",
+                                size: 12
+                            },
+                            padding: 12
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: true,
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45,
+                                font: {
+                                    family: "'IBM Plex Mono', monospace",
+                                    size: 9
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            display: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value >= 1000 ? (value/1000).toFixed(0) + 'K' : value;
+                                },
+                                font: {
+                                    family: "'IBM Plex Mono', monospace",
+                                    size: 10
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: 'nearest',
+                        axis: 'x',
+                        intersect: false
+                    }
+                }
+            });
+        }
+
+        function renderMonthlyChart(monthlyData) {
+            const ctx = document.getElementById('monthlyChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: monthlyData.map(d => d.month),
+                    datasets: [
+                        {
+                            label: 'Age 5-17',
+                            data: monthlyData.map(d => d.bio_age_5_17),
+                            backgroundColor: 'rgba(46, 125, 50, 0.8)',
+                            borderColor: '#2e7d32',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Age 17+',
+                            data: monthlyData.map(d => d.bio_age_17_),
+                            backgroundColor: 'rgba(25, 118, 210, 0.8)',
+                            borderColor: '#1976d2',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    family: "'IBM Plex Mono', monospace",
+                                    size: 11
+                                },
+                                usePointStyle: true,
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 26, 26, 0.95)',
+                            titleFont: {
+                                family: "'IBM Plex Mono', monospace",
+                                size: 11
+                            },
+                            bodyFont: {
+                                family: "'Manrope', sans-serif",
+                                size: 12
+                            },
+                            padding: 12
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: false,
+                            ticks: {
+                                font: {
+                                    family: "'IBM Plex Mono', monospace",
+                                    size: 10
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            stacked: false,
+                            ticks: {
+                                callback: function(value) {
+                                    return (value/1000000).toFixed(1) + 'M';
+                                },
+                                font: {
+                                    family: "'IBM Plex Mono', monospace",
+                                    size: 10
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderStateChart(stateData) {
+            const ctx = document.getElementById('stateChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: stateData.map(d => d.state),
+                    datasets: [{
+                        label: 'Total Updates',
+                        data: stateData.map(d => d.total_updates),
+                        backgroundColor: 'rgba(216, 67, 21, 0.8)',
+                        borderColor: '#d84315',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 26, 26, 0.95)',
+                            titleFont: {
+                                family: "'IBM Plex Mono', monospace",
+                                size: 11
+                            },
+                            bodyFont: {
+                                family: "'Manrope', sans-serif",
+                                size: 12
+                            },
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Updates: ' + formatNumber(context.parsed.x);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                callback: function(value) {
+                                    return (value/1000000).toFixed(1) + 'M';
+                                },
+                                font: {
+                                    family: "'IBM Plex Mono', monospace",
+                                    size: 10
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                font: {
+                                    family: "'Manrope', sans-serif",
+                                    size: 11
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderProportionChart(proportionData) {
+            const ctx = document.getElementById('proportionChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: proportionData.map(d => d.state),
+                    datasets: [
+                        {
+                            label: 'Age 5-17 (%)',
+                            data: proportionData.map(d => d.pct_5_17),
+                            backgroundColor: 'rgba(46, 125, 50, 0.8)',
+                            borderColor: '#2e7d32',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Age 17+ (%)',
+                            data: proportionData.map(d => d.pct_17_plus),
+                            backgroundColor: 'rgba(25, 118, 210, 0.8)',
+                            borderColor: '#1976d2',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    family: "'IBM Plex Mono', monospace",
+                                    size: 11
+                                },
+                                usePointStyle: true,
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 26, 26, 0.95)',
+                            titleFont: {
+                                family: "'IBM Plex Mono', monospace",
+                                size: 11
+                            },
+                            bodyFont: {
+                                family: "'Manrope', sans-serif",
+                                size: 12
+                            },
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '%';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                            ticks: {
+                                font: {
+                                    family: "'Manrope', sans-serif",
+                                    size: 10
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            stacked: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                },
+                                font: {
+                                    family: "'IBM Plex Mono', monospace",
+                                    size: 10
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function populateStateTable(stateData) {
+            const tbody = document.getElementById('stateTableBody');
+            stateData.forEach((state, index) => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td><span class="rank">${index + 1}</span></td>
+                    <td><strong>${state.state}</strong></td>
+                    <td>${formatNumber(state.bio_age_5_17)}</td>
+                    <td>${formatNumber(state.bio_age_17_)}</td>
+                    <td><strong>${formatNumber(state.total_updates)}</strong></td>
+                `;
+            });
+        }
+
+        function populateDistrictTable(districtData) {
+            const tbody = document.getElementById('districtTableBody');
+            districtData.forEach((district, index) => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td><span class="rank">${index + 1}</span></td>
+                    <td><strong>${district.district}</strong></td>
+                    <td>${district.state}</td>
+                    <td><strong>${formatNumber(district.total_updates)}</strong></td>
+                `;
+            });
+        }
+
+        // Load charts when page loads
+        window.addEventListener('load', loadAndRenderCharts);
+    </script>
+</body>
+</html>

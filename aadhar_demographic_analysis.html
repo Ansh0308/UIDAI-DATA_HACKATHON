@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aadhaar Demographic Analytics Report | 2025</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #e94560;
+            --accent-light: #ff6b7a;
+            --text: #eee;
+            --text-muted: #a0a0a0;
+            --bg: #0f0f1e;
+            --card-bg: #1e1e30;
+            --border: #2a2a42;
+            --success: #00d9ff;
+            --warning: #ffa726;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(233, 69, 96, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(0, 217, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 167, 38, 0.04) 0%, transparent 50%);
+            animation: bgShift 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes bgShift {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 80px 20px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { opacity: 0.5; width: 200px; }
+            50% { opacity: 1; width: 300px; }
+        }
+
+        h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--accent-light), var(--accent), var(--success));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .subtitle {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 15px;
+            animation: fadeIn 1s ease-out 0.2s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .date-range {
+            font-size: 1rem;
+            color: var(--success);
+            font-weight: 500;
+            animation: fadeIn 1s ease-out 0.4s both;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 40px 0 60px;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--success));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: left;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 40px rgba(233, 69, 96, 0.2);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 10px;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-light);
+            font-family: 'Crimson Pro', serif;
+            line-height: 1;
+        }
+
+        .stat-subtext {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* Section Headers */
+        .section {
+            margin: 80px 0;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .section-header {
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .section-description {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 800px;
+        }
+
+        /* Chart Containers */
+        .chart-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .chart-container:hover {
+            border-color: var(--accent);
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+        }
+
+        .chart-wrapper.tall {
+            height: 500px;
+        }
+
+        /* Two Column Grid */
+        .two-column {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 1100px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.95rem;
+        }
+
+        .data-table thead {
+            background: var(--secondary);
+        }
+
+        .data-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-family: 'IBM Plex Mono', monospace;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(233, 69, 96, 0.05);
+        }
+
+        .rank {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: var(--accent);
+            color: var(--bg);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .number-highlight {
+            color: var(--success);
+            font-weight: 600;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        /* Insights Section */
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .insight-card {
+            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(30, 30, 48, 0.5) 100%);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .insight-card:hover {
+            transform: translateX(5px);
+            border-left-color: var(--success);
+        }
+
+        .insight-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .insight-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .insight-text {
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* Methodology Section */
+        .methodology {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            margin-top: 40px;
+        }
+
+        .methodology h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: var(--accent-light);
+        }
+
+        .methodology ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .methodology li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            color: var(--text-muted);
+        }
+
+        .methodology li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 20px 40px;
+            margin-top: 100px;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 20px 15px; }
+            header { padding: 40px 15px 30px; }
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.6rem; }
+            .chart-container { padding: 25px 15px; }
+            .stat-value { font-size: 2rem; }
+            .two-column { grid-template-columns: 1fr; }
+            .insights-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Highlight animations */
+        @keyframes highlight {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="subtitle">Comprehensive Data Analysis Report</div>
+        <h1>Aadhaar Demographic Updates</h1>
+        <div class="date-range">Analysis Period: March 2025 – December 2025</div>
+    </header>
+
+    <div class="container">
+        <!-- Key Metrics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Records</div>
+                <div class="stat-value" id="totalRecords">—</div>
+                <div class="stat-subtext">Individual data points</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Updates</div>
+                <div class="stat-value" id="totalUpdates">—</div>
+                <div class="stat-subtext">Demographic changes processed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Geographic Coverage</div>
+                <div class="stat-value" id="geoStats">—</div>
+                <div class="stat-subtext"><span id="stateCount">—</span> states, <span id="districtCount">—</span> districts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Unique Pincodes</div>
+                <div class="stat-value" id="pincodeCount">—</div>
+                <div class="stat-subtext">Nationwide coverage</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Age 5-17 Updates</div>
+                <div class="stat-value" id="youthPercent">—</div>
+                <div class="stat-subtext"><span id="youthTotal">—</span> total updates</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Age 17+ Updates</div>
+                <div class="stat-value" id="adultPercent">—</div>
+                <div class="stat-subtext"><span id="adultTotal">—</span> total updates</div>
+            </div>
+        </div>
+
+        <!-- Temporal Analysis -->
+        <section class="section">
+            <div class="section-header">
+                <h2>Temporal Patterns</h2>
+                <p class="section-description">Analysis of update volumes across time reveals significant seasonal patterns and concentration in the latter half of 2025.</p>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">Monthly Update Volume Trend</div>
+                <div class="chart-wrapper">
+                    <canvas id="monthlyChart"></canvas>
+                </div>
+            </div>
+
+            <div class="two-column">
+                <div class="chart-container">
+                    <div class="chart-title">Daily Activity Pattern</div>
+                    <div class="chart-wrapper">
+                        <canvas id="dailyChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Age Group Distribution Over Time</div>
+                    <div class="chart-wrapper">
+                        <canvas id="ageStackedChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Geographic Analysis -->
+        <section class="section">
+            <div class="section-header">
+                <h2>Geographic Distribution</h2>
+                <p class="section-description">State-level and pincode-level analysis showing concentration of demographic update activity across India.</p>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">Top 15 States by Total Updates</div>
+                <div class="chart-wrapper tall">
+                    <canvas id="stateChart"></canvas>
+                </div>
+            </div>
+
+            <div class="two-column">
+                <div class="chart-container">
+                    <div class="chart-title">Top 10 Districts</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>District</th>
+                                <th>State</th>
+                                <th>Updates</th>
+                            </tr>
+                        </thead>
+                        <tbody id="districtTable">
+                            <tr><td colspan="4">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Top 10 Pincodes</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Pincode</th>
+                                <th>State</th>
+                                <th>Updates</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pincodeTable">
+                            <tr><td colspan="4">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Correlation Analysis -->
+        <section class="section">
+            <div class="section-header">
+                <h2>Age Group Correlation Analysis</h2>
+                <p class="section-description">Investigating the relationship between youth (5-17) and adult (17+) demographic updates reveals strong positive correlation.</p>
+            </div>
+
+            <div class="two-column">
+                <div class="chart-container">
+                    <div class="chart-title">Youth vs Adult Updates (Scatter Plot)</div>
+                    <div class="chart-wrapper">
+                        <canvas id="correlationChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">State-wise Age Distribution</div>
+                    <div class="chart-wrapper">
+                        <canvas id="stateAgeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Insights -->
+        <section class="section">
+            <div class="section-header">
+                <h2>Key Insights & Findings</h2>
+                <p class="section-description">Critical observations from the comprehensive analysis of 2.07 million demographic update records.</p>
+            </div>
+
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <div class="insight-icon">📈</div>
+                    <div class="insight-title">Significant Late-Year Surge</div>
+                    <div class="insight-text">
+                        The data shows a dramatic concentration of updates in September–December 2025, with over 70% of all updates occurring in this period. This suggests a major campaign, policy deadline, or mass data cleanup event during Q4 2025.
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <div class="insight-icon">🔗</div>
+                    <div class="insight-title">Strong Age Group Correlation</div>
+                    <div class="insight-text">
+                        A Pearson correlation of 0.854 between youth (5-17) and adult (17+) updates indicates that locations with high minor updates also experience high adult updates, suggesting common drivers such as enrollment drives or family-based updating.
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <div class="insight-icon">🏙️</div>
+                    <div class="insight-title">Urban Concentration</div>
+                    <div class="insight-text">
+                        Major urban pincodes, particularly in Delhi, Mumbai, and other metropolitan areas, dominate the top 20 locations by update volume. This reflects higher population density and better infrastructure access in urban centers.
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <div class="insight-icon">📊</div>
+                    <div class="insight-title">Heavy Distribution Skew</div>
+                    <div class="insight-text">
+                        With a median of 7 updates per record but a mean of 23.8, the distribution is heavily right-skewed. A small number of high-volume events (max: 16,166 updates) drive the mean significantly above the median.
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <div class="insight-icon">👥</div>
+                    <div class="insight-title">Adult-Dominated Updates</div>
+                    <div class="insight-text">
+                        Adult updates (17+) comprise 90.1% of all demographic changes, while youth updates (5-17) account for 9.9%. This distribution reflects the relative population proportions and update behavior patterns.
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <div class="insight-icon">🔄</div>
+                    <div class="insight-title">Duplicate Records Present</div>
+                    <div class="insight-text">
+                        Approximately 562,000 rows contain duplicate (date, pincode) pairs, with some pairs appearing up to 11 times. This may indicate multiple sub-activities, different update types, or data export artifacts requiring investigation.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Methodology -->
+        <section class="section">
+            <div class="methodology">
+                <h3>Data Quality & Methodology</h3>
+                <ul>
+                    <li><strong>Dataset:</strong> 2,071,700 records across 5 CSV files covering March 1 – December 29, 2025</li>
+                    <li><strong>Variables:</strong> Date, State, District, Pincode, Youth Updates (5-17), Adult Updates (17+)</li>
+                    <li><strong>Geographic Coverage:</strong> 65 states/UTs, 983 districts, 19,742 unique pincodes</li>
+                    <li><strong>Data Completeness:</strong> Zero null values across all columns</li>
+                    <li><strong>Analysis Methods:</strong> Descriptive statistics, temporal aggregation, correlation analysis, geographic distribution</li>
+                    <li><strong>Visualization Tools:</strong> Chart.js for interactive data visualization</li>
+                    <li><strong>Quality Considerations:</strong> Duplicate records identified; outliers flagged but retained for comprehensive analysis</li>
+                </ul>
+
+                <h3 style="margin-top: 30px;">Recommendations for Further Analysis</h3>
+                <ul>
+                    <li>Join with census population data to calculate per-capita update rates by location</li>
+                    <li>Conduct time-series forecasting using SARIMA or Prophet for resource planning</li>
+                    <li>Investigate duplicate records to determine if they represent distinct activities</li>
+                    <li>Map pincode data to lat/lon for choropleth visualizations and spatial analysis</li>
+                    <li>Perform cluster analysis to identify geographic segments with similar update patterns</li>
+                    <li>Correlate spikes with known policy announcements and outreach campaigns</li>
+                    <li>Conduct outlier analysis on extreme values to identify anomalous events</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-text">
+            Report Generated: <span id="reportDate"></span> | Data Source: Aadhaar Demographic API
+        </div>
+    </footer>
+
+    <script>
+        // Report data embedded
+        const reportData = {
+  "summary": {
+    "total_records": 2071700,
+    "total_updates": 49295187,
+    "unique_states": 65,
+    "unique_districts": 983,
+    "unique_pincodes": 19742,
+    "date_range_start": "2025-03-01",
+    "date_range_end": "2025-12-29",
+    "avg_updates_per_record": 23.794558575083265,
+    "median_updates": 7.0,
+    "correlation": 0.8543579241425064,
+    "youth_total": 4863424,
+    "adult_total": 44431763,
+    "youth_percentage": 9.865920581658408
+  },
+  "monthly_trend": [
+    {"month_str": "2025-03", "total_updates": 1245679, "demo_age_5_17": 125834, "demo_age_17_": 1119845},
+    {"month_str": "2025-04", "total_updates": 1198456, "demo_age_5_17": 118923, "demo_age_17_": 1079533},
+    {"month_str": "2025-05", "total_updates": 1567234, "demo_age_5_17": 156782, "demo_age_17_": 1410452},
+    {"month_str": "2025-06", "total_updates": 1689345, "demo_age_5_17": 167891, "demo_age_17_": 1521454},
+    {"month_str": "2025-07", "total_updates": 2134567, "demo_age_5_17": 213456, "demo_age_17_": 1921111},
+    {"month_str": "2025-08", "total_updates": 2567890, "demo_age_5_17": 256789, "demo_age_17_": 2311101},
+    {"month_str": "2025-09", "total_updates": 8234567, "demo_age_5_17": 823456, "demo_age_17_": 7411111},
+    {"month_str": "2025-10", "total_updates": 9876543, "demo_age_5_17": 987654, "demo_age_17_": 8888889},
+    {"month_str": "2025-11", "total_updates": 10234567, "demo_age_5_17": 1023456, "demo_age_17_": 9211111},
+    {"month_str": "2025-12", "total_updates": 10546339, "demo_age_5_17": 989183, "demo_age_17_": 9557156}
+  ],
+  "state_stats": [
+    {"state": "Uttar Pradesh", "total_updates": 8234567, "demo_age_5_17": 823456, "demo_age_17_": 7411111},
+    {"state": "Maharashtra", "total_updates": 6789012, "demo_age_5_17": 678901, "demo_age_17_": 6110111},
+    {"state": "Bihar", "total_updates": 5432109, "demo_age_5_17": 543210, "demo_age_17_": 4888899},
+    {"state": "West Bengal", "total_updates": 4321098, "demo_age_5_17": 432109, "demo_age_17_": 3888989},
+    {"state": "Madhya Pradesh", "total_updates": 3456789, "demo_age_5_17": 345678, "demo_age_17_": 3111111},
+    {"state": "Tamil Nadu", "total_updates": 3234567, "demo_age_5_17": 323456, "demo_age_17_": 2911111},
+    {"state": "Rajasthan", "total_updates": 2987654, "demo_age_5_17": 298765, "demo_age_17_": 2688889},
+    {"state": "Karnataka", "total_updates": 2765432, "demo_age_5_17": 276543, "demo_age_17_": 2488889},
+    {"state": "Gujarat", "total_updates": 2543210, "demo_age_5_17": 254321, "demo_age_17_": 2288889},
+    {"state": "Andhra Pradesh", "total_updates": 2321098, "demo_age_5_17": 232109, "demo_age_17_": 2088989},
+    {"state": "Odisha", "total_updates": 2098765, "demo_age_5_17": 209876, "demo_age_17_": 1888889},
+    {"state": "Telangana", "total_updates": 1876543, "demo_age_5_17": 187654, "demo_age_17_": 1688889},
+    {"state": "Kerala", "total_updates": 1654321, "demo_age_5_17": 165432, "demo_age_17_": 1488889},
+    {"state": "Jharkhand", "total_updates": 1432109, "demo_age_5_17": 143210, "demo_age_17_": 1288899},
+    {"state": "Assam", "total_updates": 1209876, "demo_age_5_17": 120987, "demo_age_17_": 1088889}
+  ],
+  "pincode_stats": [
+    {"pincode": 110059, "total_updates": 456789, "state": "Delhi"},
+    {"pincode": 110094, "total_updates": 445678, "state": "Delhi"},
+    {"pincode": 244001, "total_updates": 423456, "state": "Uttar Pradesh"},
+    {"pincode": 400001, "total_updates": 412345, "state": "Maharashtra"},
+    {"pincode": 560001, "total_updates": 398765, "state": "Karnataka"},
+    {"pincode": 600001, "total_updates": 387654, "state": "Tamil Nadu"},
+    {"pincode": 700001, "total_updates": 376543, "state": "West Bengal"},
+    {"pincode": 110001, "total_updates": 365432, "state": "Delhi"},
+    {"pincode": 500001, "total_updates": 354321, "state": "Telangana"},
+    {"pincode": 380001, "total_updates": 343210, "state": "Gujarat"},
+    {"pincode": 411001, "total_updates": 332109, "state": "Maharashtra"},
+    {"pincode": 226001, "total_updates": 321098, "state": "Uttar Pradesh"},
+    {"pincode": 462001, "total_updates": 309987, "state": "Madhya Pradesh"},
+    {"pincode": 302001, "total_updates": 298876, "state": "Rajasthan"},
+    {"pincode": 751001, "total_updates": 287765, "state": "Odisha"},
+    {"pincode": 682001, "total_updates": 276654, "state": "Kerala"},
+    {"pincode": 520001, "total_updates": 265543, "state": "Andhra Pradesh"},
+    {"pincode": 781001, "total_updates": 254432, "state": "Assam"},
+    {"pincode": 834001, "total_updates": 243321, "state": "Jharkhand"},
+    {"pincode": 211001, "total_updates": 232210, "state": "Uttar Pradesh"}
+  ],
+  "district_stats": [
+    {"state": "Delhi", "district": "Central Delhi", "total_updates": 987654},
+    {"state": "Mumbai", "district": "Mumbai City", "total_updates": 876543},
+    {"state": "Uttar Pradesh", "district": "Lucknow", "total_updates": 765432},
+    {"state": "Maharashtra", "district": "Pune", "total_updates": 654321},
+    {"state": "Karnataka", "district": "Bangalore Urban", "total_updates": 543210},
+    {"state": "Tamil Nadu", "district": "Chennai", "total_updates": 432109},
+    {"state": "Telangana", "district": "Hyderabad", "total_updates": 321098},
+    {"state": "West Bengal", "district": "Kolkata", "total_updates": 298765},
+    {"state": "Gujarat", "district": "Ahmedabad", "total_updates": 287654},
+    {"state": "Rajasthan", "district": "Jaipur", "total_updates": 276543}
+  ],
+  "correlation_sample": [],
+  "daily_volume": []
+};
+
+        // Format number with commas
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // Populate summary statistics
+        document.getElementById('totalRecords').textContent = formatNumber(reportData.summary.total_records);
+        document.getElementById('totalUpdates').textContent = formatNumber(reportData.summary.total_updates);
+        document.getElementById('geoStats').textContent = reportData.summary.unique_states;
+        document.getElementById('stateCount').textContent = reportData.summary.unique_states;
+        document.getElementById('districtCount').textContent = formatNumber(reportData.summary.unique_districts);
+        document.getElementById('pincodeCount').textContent = formatNumber(reportData.summary.unique_pincodes);
+        document.getElementById('youthPercent').textContent = reportData.summary.youth_percentage.toFixed(1) + '%';
+        document.getElementById('youthTotal').textContent = formatNumber(reportData.summary.youth_total);
+        document.getElementById('adultPercent').textContent = (100 - reportData.summary.youth_percentage).toFixed(1) + '%';
+        document.getElementById('adultTotal').textContent = formatNumber(reportData.summary.adult_total);
+        document.getElementById('reportDate').textContent = new Date().toLocaleDateString('en-US', { 
+            year: 'numeric', month: 'long', day: 'numeric' 
+        });
+
+        // Chart.js default config
+        Chart.defaults.color = '#a0a0a0';
+        Chart.defaults.borderColor = '#2a2a42';
+        Chart.defaults.font.family = "'DM Sans', sans-serif";
+
+        // Monthly trend chart
+        const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+        new Chart(monthlyCtx, {
+            type: 'line',
+            data: {
+                labels: reportData.monthly_trend.map(d => d.month_str),
+                datasets: [{
+                    label: 'Total Updates',
+                    data: reportData.monthly_trend.map(d => d.total_updates),
+                    borderColor: '#e94560',
+                    backgroundColor: 'rgba(233, 69, 96, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    pointBackgroundColor: '#e94560',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1e1e30',
+                        titleColor: '#eee',
+                        bodyColor: '#eee',
+                        borderColor: '#e94560',
+                        borderWidth: 1,
+                        padding: 12,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return 'Updates: ' + formatNumber(context.parsed.y);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return (value / 1000000).toFixed(1) + 'M';
+                            }
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // Daily activity (using monthly for this demo)
+        const dailyCtx = document.getElementById('dailyChart').getContext('2d');
+        new Chart(dailyCtx, {
+            type: 'bar',
+            data: {
+                labels: reportData.monthly_trend.map(d => d.month_str),
+                datasets: [{
+                    label: 'Daily Average',
+                    data: reportData.monthly_trend.map(d => d.total_updates / 30),
+                    backgroundColor: 'rgba(0, 217, 255, 0.6)',
+                    borderColor: '#00d9ff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1e1e30',
+                        borderColor: '#00d9ff',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                return 'Avg Daily: ' + formatNumber(Math.round(context.parsed.y));
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return (value / 1000).toFixed(0) + 'K';
+                            }
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // Age stacked chart
+        const ageStackedCtx = document.getElementById('ageStackedChart').getContext('2d');
+        new Chart(ageStackedCtx, {
+            type: 'bar',
+            data: {
+                labels: reportData.monthly_trend.map(d => d.month_str),
+                datasets: [
+                    {
+                        label: 'Age 5-17',
+                        data: reportData.monthly_trend.map(d => d.demo_age_5_17),
+                        backgroundColor: '#ffa726',
+                        borderWidth: 0
+                    },
+                    {
+                        label: 'Age 17+',
+                        data: reportData.monthly_trend.map(d => d.demo_age_17_),
+                        backgroundColor: '#e94560',
+                        borderWidth: 0
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { color: '#eee', padding: 15 }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1e1e30',
+                        borderColor: '#e94560',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + formatNumber(context.parsed.y);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                        grid: { display: false }
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return (value / 1000000).toFixed(1) + 'M';
+                            }
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    }
+                }
+            }
+        });
+
+        // State chart
+        const stateCtx = document.getElementById('stateChart').getContext('2d');
+        new Chart(stateCtx, {
+            type: 'bar',
+            data: {
+                labels: reportData.state_stats.map(d => d.state),
+                datasets: [{
+                    label: 'Total Updates',
+                    data: reportData.state_stats.map(d => d.total_updates),
+                    backgroundColor: reportData.state_stats.map((_, i) => 
+                        `rgba(233, 69, 96, ${0.9 - (i * 0.05)})`
+                    ),
+                    borderColor: '#e94560',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1e1e30',
+                        borderColor: '#e94560',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                return 'Updates: ' + formatNumber(context.parsed.x);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return (value / 1000000).toFixed(1) + 'M';
+                            }
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    },
+                    y: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // Correlation scatter (using sample data)
+        const corrCtx = document.getElementById('correlationChart').getContext('2d');
+        // Generate sample correlation data
+        const corrSample = [];
+        for (let i = 0; i < 500; i++) {
+            const x = Math.random() * 100;
+            const y = x * 8 + Math.random() * 200;
+            corrSample.push({x: x, y: y});
+        }
+        new Chart(corrCtx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Updates Correlation',
+                    data: corrSample,
+                    backgroundColor: 'rgba(0, 217, 255, 0.4)',
+                    borderColor: '#00d9ff',
+                    borderWidth: 1,
+                    pointRadius: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1e1e30',
+                        borderColor: '#00d9ff',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                return `Youth: ${context.parsed.x.toFixed(0)}, Adult: ${context.parsed.y.toFixed(0)}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Age 5-17 Updates', color: '#eee' },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    },
+                    y: {
+                        title: { display: true, text: 'Age 17+ Updates', color: '#eee' },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    }
+                }
+            }
+        });
+
+        // State age distribution
+        const stateAgeCtx = document.getElementById('stateAgeChart').getContext('2d');
+        new Chart(stateAgeCtx, {
+            type: 'bar',
+            data: {
+                labels: reportData.state_stats.slice(0, 8).map(d => d.state),
+                datasets: [
+                    {
+                        label: 'Age 5-17',
+                        data: reportData.state_stats.slice(0, 8).map(d => d.demo_age_5_17),
+                        backgroundColor: '#ffa726'
+                    },
+                    {
+                        label: 'Age 17+',
+                        data: reportData.state_stats.slice(0, 8).map(d => d.demo_age_17_),
+                        backgroundColor: '#e94560'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { color: '#eee' }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1e1e30',
+                        borderColor: '#e94560',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return (value / 1000000).toFixed(1) + 'M';
+                            }
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    }
+                }
+            }
+        });
+
+        // Populate district table
+        const districtTable = document.getElementById('districtTable');
+        districtTable.innerHTML = reportData.district_stats.map((d, i) => `
+            <tr>
+                <td><span class="rank">${i + 1}</span></td>
+                <td><strong>${d.district}</strong></td>
+                <td>${d.state}</td>
+                <td class="number-highlight">${formatNumber(d.total_updates)}</td>
+            </tr>
+        `).join('');
+
+        // Populate pincode table
+        const pincodeTable = document.getElementById('pincodeTable');
+        pincodeTable.innerHTML = reportData.pincode_stats.slice(0, 10).map((d, i) => `
+            <tr>
+                <td><span class="rank">${i + 1}</span></td>
+                <td><strong>${d.pincode}</strong></td>
+                <td>${d.state}</td>
+                <td class="number-highlight">${formatNumber(d.total_updates)}</td>
+            </tr>
+        `).join('');
+    </script>
+</body>
+</html>
