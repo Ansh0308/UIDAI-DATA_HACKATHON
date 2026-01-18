@@ -445,29 +445,6 @@ Submit custom analysis request
 
 ---
 
-## Directory Structure
-
-```
-.
-├── /app
-│   ├── /dashboard          # Dashboard page and layout
-│   └── /api
-│       └── /analytics      # API routes
-├── /lib
-│   ├── data_pipeline.py    # Data processing
-│   ├── ml_models.py        # ML algorithms
-│   └── pdf_generator.py    # Report generation
-├── /notebooks
-│   ├── 01_exploratory_data_analysis.ipynb
-│   ├── 02_ml_models_and_predictions.ipynb
-│   └── 03_report_generation.ipynb
-├── /data                   # Input datasets (not included)
-├── /reports                # Generated reports and exports
-├── /public                 # Static assets
-└── README.md               # This file
-```
-
----
 
 ## Performance Considerations
 
@@ -504,24 +481,5 @@ Submit custom analysis request
 6. **Impact Tracking**: Measure effectiveness of implemented recommendations
 
 ---
-
-## Support & Contact
-
-For issues, questions, or contributions:
-- Create GitHub issues for bug reports
-- Submit pull requests for enhancements
-- Contact analytics team for production support
-
----
-
-## License
-
-This project is developed for policy analysis and public health improvement.
-
----
-
-## Acknowledgments
-
-This comprehensive analytics platform was developed to support informed decision-making in Aadhaar enrollment and digital identity management. The multi-dimensional analysis framework enables identification of systemic gaps and vulnerable populations, supporting equitable access to government services.
 
 **Last Updated:** January 18, 2026
